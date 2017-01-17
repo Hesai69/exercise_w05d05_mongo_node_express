@@ -33,7 +33,35 @@ router.post('/insert', function(req, res, next) {
 });
 
 /* READ Data */
+
+
+router.get('/data', function(req, res) {
+  mongo.connect(url, function(err, db) {
+    assert.equal(null, err);
+    console.log('connected to db');
+    db.collection('data').find().toArray(function(err, result) {
+      db.close();
+      res.send(JSON.stringify(result));
+    });
+  });
+});
+
+
+
+router.get('/data/:id', function(req, res) {
+  mongo.connect(url, function(err, db) {
+    assert.equal(null, err);
+    db.collection('data').findOne({ _id: objectId(req.params.id)}, function(err, result) {
+      db.close();
+      res.send(result);
+    });
+  });
+});
+
 /* UPDATE Data */
+
+
+
 /* DELETE Data */
 
 module.exports = router;
